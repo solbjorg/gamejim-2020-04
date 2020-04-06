@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 0.992262, 1.0151 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+scale = Vector2( 0.995641, 1.04119 )
+current = true
+limit_smoothed = true
+smoothing_enabled = true

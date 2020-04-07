@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 class_name Player
 
+signal hit
+
 onready var pickup_timer : Timer = $PickupTimer
 onready var hit_timer : Timer = $HitTimer
 onready var throw_timer : Timer = $ThrowTimer
@@ -16,13 +18,14 @@ enum ThrowingState {
 	CAN_PICK_UP
 }
 
-var throwing_state = ThrowingState.HOLDING
-
-var is_hit = false
-
 export var speed : float = 400
 export var min_force = 30
 export var max_force = 150
+export var max_health = 8
+
+var throwing_state = ThrowingState.HOLDING
+var is_hit = false
+var health = max_health
 
 func _ready():
 	$AnimatedSprite.play()
@@ -91,6 +94,8 @@ func hit():
 		$AnimatedSprite.animation = "hit"
 		hit_timer.start()
 		is_hit = true
+		health -= 1
+		emit_signal("hit")
 
 func pickup(body : Boomerang):
 	if throwing_state == ThrowingState.CAN_PICK_UP:

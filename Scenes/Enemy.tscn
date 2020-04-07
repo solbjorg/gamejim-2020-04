@@ -10,10 +10,10 @@
 [ext_resource path="res://Assets/tiny_zombie/tiny_zombie_idle_anim_f1.png" type="Texture" id=8]
 [ext_resource path="res://Assets/tiny_zombie/tiny_zombie_idle_anim_f0.png" type="Texture" id=9]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1.49426, 4.63471 )
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 1 ), ExtResource( 3 ) ],
 "loop": true,
@@ -34,8 +34,8 @@ script = ExtResource( 4 )
 [node name="Hurtbox" type="CollisionShape2D" parent="."]
 position = Vector2( 0.5, 1.5 )
 scale = Vector2( 3.0561, 0.9501 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 1 )
+frames = SubResource( 2 )
 animation = "move"

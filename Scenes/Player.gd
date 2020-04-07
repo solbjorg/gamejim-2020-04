@@ -2,19 +2,27 @@ extends KinematicBody2D
 
 class_name Player
 
-onready var pickup_timer = $PickupTimer
-onready var hit_timer = $HitTimer
+onready var pickup_timer : Timer = $PickupTimer
+onready var hit_timer : Timer = $HitTimer
+onready var throw_timer : Timer = $ThrowTimer
 var weapon = preload("res://Scenes/Boomerang.tscn")
 onready var held_weapon : Sprite = $"weapon_cleaver"
 onready var aim_line : Line2D = $Line2D
 
-var thrown = false
-var can_pick_up_weapon = true
+enum ThrowingState {
+	HOLDING,
+	CHARGING,
+	THROWN,
+	CAN_PICK_UP
+}
+
+var throwing_state = ThrowingState.HOLDING
+
 var is_hit = false
 
 export var speed : float = 400
-export var min_force = 100
-export var max_force = 300
+export var min_force = 30
+export var max_force = 150
 
 func _ready():
 	$AnimatedSprite.play()
@@ -41,26 +49,34 @@ func _physics_process(delta):
 		handle_collision(col)
 
 func _process(_delta):
-	var mouse_pos = get_local_mouse_position()
-	aim_line.set_point_position(0, Vector2(0,0))
-	aim_line.set_point_position(1, mouse_pos)
-	aim_line.default_color = Color(range_lerp(clamp(mouse_pos.length(), min_force, max_force), min_force, max_force, 0, 1), 0, 0)
+	if throwing_state == ThrowingState.CHARGING:
+		var mouse_pos = get_local_mouse_position()
+		aim_line.width = 2
+		var strength = range_lerp(throw_timer.wait_time - throw_timer.time_left, 0, throw_timer.wait_time, 0, 1)
+		aim_line.set_point_position(0, Vector2(0,0))
+		aim_line.set_point_position(1, mouse_pos.normalized() * 30 * strength)
+		#aim_line.default_color = Color(range_lerp(clamp(mouse_pos.length(), min_force, max_force), min_force, max_force, 0, 1), 0, 0)
+		aim_line.default_color = Color(strength, 0, 0)
+	else:
+		aim_line.width = 0
 
 # shooty!
 func _input(event):
 		if event is InputEventMouseButton:
-			if event.button_index == BUTTON_LEFT and event.pressed and !thrown:
+			if event.button_index == BUTTON_LEFT and event.pressed and throwing_state == ThrowingState.HOLDING:
+				throw_timer.start()
+				throwing_state = ThrowingState.CHARGING
+			if event.button_index == BUTTON_LEFT and !event.pressed and throwing_state == ThrowingState.CHARGING:
 				var wep = weapon.instance()
 				wep.global_position = global_position
 				get_parent().add_child(wep)
 				var target = get_global_mouse_position()
-				var weapon_mouse_vec = (target - global_position)
-				var force = clamp(weapon_mouse_vec.length(), min_force, max_force)
+				var force = range_lerp(throw_timer.wait_time - throw_timer.time_left, 0, throw_timer.wait_time, min_force, max_force)
 				wep.throw(target, force)
 				held_weapon.hide()
-				can_pick_up_weapon = false
-				thrown = true
+				throwing_state = ThrowingState.THROWN
 				pickup_timer.start()
+				throw_timer.stop()
 
 func handle_collision(col: KinematicCollision2D):
 	if col.collider.has_method("player_collide"):
@@ -68,7 +84,7 @@ func handle_collision(col: KinematicCollision2D):
 		col.collider.player_collide(self)
 
 func _on_Timer_timeout():
-	can_pick_up_weapon = true
+	throwing_state = ThrowingState.CAN_PICK_UP
 
 func hit():
 	if (!is_hit):
@@ -77,9 +93,9 @@ func hit():
 		is_hit = true
 
 func pickup(body : Boomerang):
-	if can_pick_up_weapon:
+	if throwing_state == ThrowingState.CAN_PICK_UP:
 		held_weapon.show()
-		thrown = false
+		throwing_state = ThrowingState.HOLDING
 		body.queue_free()
 
 func _on_HitTimer_timeout():

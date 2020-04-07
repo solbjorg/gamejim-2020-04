@@ -6,9 +6,10 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.80952, 10.7215 )
 
-[node name="Boomerang" type="RigidBody2D"]
-scale = Vector2( 1, 0.992 )
-gravity_scale = 0.0
+[node name="Boomerang" type="Area2D"]
+scale = Vector2( 1.00161, 0.992003 )
+collision_layer = 16
+collision_mask = 31
 script = ExtResource( 2 )
 
 [node name="weapon_cleaver" type="Sprite" parent="."]
@@ -21,4 +22,4 @@ shape = SubResource( 1 )
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="." to="." method="_on_Boomerang_body_entered"]

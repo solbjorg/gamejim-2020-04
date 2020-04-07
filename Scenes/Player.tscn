@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/elf_f/elf_f_run_anim_f0.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Assets/elf_f/elf_f_idle_anim_f1.png" type="Texture" id=6]
 [ext_resource path="res://Assets/weapons/weapon_cleaver.png" type="Texture" id=7]
 [ext_resource path="res://Assets/elf_f/elf_f_idle_anim_f0.png" type="Texture" id=8]
+[ext_resource path="res://Assets/elf_f/elf_f_hit_anim_f0.png" type="Texture" id=9]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -20,18 +21,24 @@ animations = [ {
 "loop": true,
 "name": "move",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 9 ) ],
+"loop": true,
+"name": "hit",
+"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 7.57915, 10 )
 
-[node name="Player" type="Area2D"]
-scale = Vector2( 2, 2 )
+[node name="Player" type="KinematicBody2D"]
+scale = Vector2( 2, 1.98861 )
+collision_mask = 3
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-animation = "idle"
+animation = "hit"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.625862, 3.88033 )
@@ -41,12 +48,16 @@ shape = SubResource( 2 )
 scale = Vector2( 0.983333, 1 )
 texture = ExtResource( 7 )
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
+[node name="PickupTimer" type="Timer" parent="."]
+wait_time = 0.2
 one_shot = true
 
 [node name="Line2D" type="Line2D" parent="."]
 points = PoolVector2Array( 0, 0, 0, 0 )
 width = 2.0
-[connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+[node name="HitTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+[connection signal="timeout" from="PickupTimer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]

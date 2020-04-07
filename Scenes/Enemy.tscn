@@ -1,0 +1,41 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Assets/tiny_zombie/tiny_zombie_idle_anim_f2.png" type="Texture" id=1]
+[ext_resource path="res://Assets/tiny_zombie/tiny_zombie_run_anim_f0.png" type="Texture" id=2]
+[ext_resource path="res://Assets/tiny_zombie/tiny_zombie_idle_anim_f3.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Enemy.gd" type="Script" id=4]
+[ext_resource path="res://Assets/tiny_zombie/tiny_zombie_run_anim_f3.png" type="Texture" id=5]
+[ext_resource path="res://Assets/tiny_zombie/tiny_zombie_run_anim_f2.png" type="Texture" id=6]
+[ext_resource path="res://Assets/tiny_zombie/tiny_zombie_run_anim_f1.png" type="Texture" id=7]
+[ext_resource path="res://Assets/tiny_zombie/tiny_zombie_idle_anim_f1.png" type="Texture" id=8]
+[ext_resource path="res://Assets/tiny_zombie/tiny_zombie_idle_anim_f0.png" type="Texture" id=9]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 1.49426, 4.63471 )
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 1 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "move",
+"speed": 5.0
+} ]
+
+[node name="Enemy" type="KinematicBody2D"]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource( 4 )
+
+[node name="Hurtbox" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 1.5 )
+scale = Vector2( 3.0561, 0.9501 )
+shape = SubResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "move"

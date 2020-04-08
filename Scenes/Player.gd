@@ -43,10 +43,12 @@ func _physics_process(delta):
 		velocity.y += 1;
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed;
-		$AnimatedSprite.animation = "move"
+		if !is_hit:
+			$AnimatedSprite.animation = "move"
 		$AnimatedSprite.flip_h = velocity.x < 0
 	else:
-		$AnimatedSprite.animation = "idle"
+		if !is_hit:
+			$AnimatedSprite.animation = "idle"
 	var col : KinematicCollision2D = move_and_collide(velocity * delta)
 	if col:
 		handle_collision(col)
@@ -89,7 +91,7 @@ func handle_collision(col: KinematicCollision2D):
 func _on_Timer_timeout():
 	throwing_state = ThrowingState.CAN_PICK_UP
 
-func hit():
+func hit(normal : Vector2):
 	if (!is_hit):
 		$AnimatedSprite.animation = "hit"
 		hit_timer.start()

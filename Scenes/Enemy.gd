@@ -5,9 +5,13 @@ class_name Enemy
 onready var player : Player = $"../Player"
 onready var animated_sprite : AnimatedSprite = $AnimatedSprite
 onready var hit_timer : Timer = $HitTimer
+onready var dead_timer : Timer = $DeadTimer
+onready var particles : Particles2D = $Particles2D
 
 export var acceleration : float = 4
 export var max_speed : float = 2
+
+var dead = false
 
 var velocity = Vector2()
 
@@ -16,17 +20,22 @@ func _ready():
 	animated_sprite.play()
 
 func _process(delta):
-	if hit_timer.is_stopped():
-		var direction = (player.global_position - self.global_position).normalized()
-		var _velocity = velocity + direction * delta * acceleration
-		if (_velocity.length() <= max_speed): velocity = _velocity
-		else: velocity = _velocity.normalized() * max_speed
-	var col : KinematicCollision2D = move_and_collide(velocity)
-	if col:
-		if col.collider.has_method("hit"):
-			player_collide(col.collider)
-		else:
-			velocity.slide(col.normal)
+	if !dead:
+		if hit_timer.is_stopped():
+			var direction = (player.global_position - self.global_position).normalized()
+			var _velocity = velocity + direction * delta * acceleration
+			if (_velocity.length() <= max_speed): velocity = _velocity
+			else: velocity = _velocity.normalized() * max_speed
+		var col : KinematicCollision2D = move_and_collide(velocity)
+		if col:
+			if col.collider.has_method("hit"):
+				player_collide(col.collider)
+			else:
+				velocity = velocity.slide(col.normal)
+	else:
+		velocity *= 0.9
+		position += velocity
+		
 
 func player_collide(_player : Player):
 	var direction = (_player.global_position - self.global_position).normalized()
@@ -36,7 +45,14 @@ func player_collide(_player : Player):
 	hit_timer.start()
 
 func weapon_collide(_weapon: Boomerang):
-	queue_free()
+	dead = true
+	velocity *= -1
+	particles.emitting = true
+	velocity = velocity.bounce((_weapon.global_position - self.global_position).normalized()) * 4
+	dead_timer.start()
 
 func _on_HitTimer_timeout():
 	pass
+
+func _on_DeadTimer_timeout():
+	queue_free()

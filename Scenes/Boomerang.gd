@@ -1,7 +1,8 @@
 extends Area2D
 class_name Boomerang
 
-export var speed : float = 400
+export var max_speed : float = 50
+export var acceleration : float = 5
 
 var target : Vector2
 var hit_wall : bool = false
@@ -15,8 +16,10 @@ func _ready():
 
 func _process(delta):
 	if !hit_wall:
-		var direction : Vector2 = (global_position - player.global_position).normalized()
-		velocity -= 10 * direction * delta
+		var direction : Vector2 = (player.global_position - global_position).normalized()
+		var _velocity = velocity + acceleration * direction * delta
+		if _velocity.length() > max_speed: velocity = _velocity.normalized() * max_speed
+		else: velocity = _velocity
 		position += velocity
 		rotation += delta * force / 5
 
@@ -54,9 +57,12 @@ func wall_collide():
 	#position = Vector2(0,0)
 
 func _on_Boomerang_body_entered(body: Node):
-	if body.name == "Player":
+	var is_player : bool = body.get_collision_layer_bit(0)
+	var is_enemy : bool = body.get_collision_layer_bit(1)
+	var is_wall : bool = body.get_collision_layer_bit(2)
+	if is_player:
 		player_collide(body)
-	if body.name == "Enemy":
+	elif is_enemy:
 		enemy_collide(body)
-	if body.name == "Walls":
+	elif is_wall:
 		wall_collide()

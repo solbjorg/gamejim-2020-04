@@ -20,7 +20,7 @@ func _ready():
 	animated_sprite.animation = "move"
 	animated_sprite.play()
 
-func _process(delta):
+func _physics_process(delta):
 	if !dead:
 		if hit_timer.is_stopped():
 			var direction = (player.global_position - self.global_position).normalized()
@@ -34,8 +34,7 @@ func _process(delta):
 			else:
 				velocity = velocity.slide(col.normal)
 	else:
-		velocity *= 0.9
-		position += velocity
+		velocity = move_and_slide(velocity) * 0.9
 		
 
 func player_collide(_player : Player):
@@ -50,8 +49,10 @@ func weapon_collide(_weapon: Boomerang):
 		dead = true
 		velocity *= -1
 		particles.emitting = true
-		velocity = velocity.bounce((_weapon.global_position - self.global_position).normalized()) * 4
-		hurtbox.shape = null
+		velocity = velocity.bounce((_weapon.global_position - self.global_position).normalized()) * _weapon.velocity * 40
+		# only collide with walls
+		collision_layer = 0
+		collision_mask = 4
 		dead_timer.start()
 
 func _on_HitTimer_timeout():

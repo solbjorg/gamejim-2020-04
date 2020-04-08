@@ -7,36 +7,6 @@
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-scale = Vector2( 1, 1 )
-collision_layer = 7
-collision_mask = 7
-min_force = 60
-max_force = 200
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-scale = Vector2( 0.755396, 0.997884 )
-current = true
-zoom = Vector2( 0.35, 0.35 )
-limit_smoothed = true
-smoothing_enabled = true
-
-[node name="Enemy" parent="." instance=ExtResource( 3 )]
-position = Vector2( 0, 50 )
-scale = Vector2( 1.01044, 0.894818 )
-
-[node name="Enemy2" parent="." instance=ExtResource( 3 )]
-position = Vector2( -137.036, -50.4607 )
-scale = Vector2( 1.01044, 0.894818 )
-
-[node name="Enemy3" parent="." instance=ExtResource( 3 )]
-position = Vector2( -148.74, 63.6548 )
-scale = Vector2( 1.01044, 0.894818 )
-
-[node name="Enemy4" parent="." instance=ExtResource( 3 )]
-position = Vector2( -95.0963, 26.104 )
-scale = Vector2( 1.01044, 0.894818 )
-
 [node name="Walls" parent="." instance=ExtResource( 2 )]
 collision_layer = 4
 collision_mask = 15
@@ -55,4 +25,36 @@ tile_data = PoolIntArray( -262135, 25, 0, -262134, 25, 2, -131080, 25, 0, -13107
 margin_left = 10.0
 margin_top = 10.0
 rect_scale = Vector2( 4, 4 )
+
+[node name="Characters" type="Node2D" parent="."]
+
+[node name="Enemy" parent="Characters" instance=ExtResource( 3 )]
+position = Vector2( 0, 50 )
+scale = Vector2( 1.01044, 0.894818 )
+
+[node name="Enemy2" parent="Characters" instance=ExtResource( 3 )]
+position = Vector2( -137.036, -50.4607 )
+scale = Vector2( 1.01044, 0.894818 )
+
+[node name="Enemy3" parent="Characters" instance=ExtResource( 3 )]
+position = Vector2( -148.74, 63.6548 )
+scale = Vector2( 1.01044, 0.894818 )
+
+[node name="Enemy4" parent="Characters" instance=ExtResource( 3 )]
+position = Vector2( -95.0963, 26.104 )
+scale = Vector2( 1.01044, 0.894818 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 1, 1 )
+collision_layer = 7
+collision_mask = 7
+min_force = 60
+max_force = 200
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+scale = Vector2( 0.755396, 0.997884 )
+current = true
+zoom = Vector2( 0.35, 0.35 )
+limit_smoothed = true
+smoothing_enabled = true
 [connection signal="hit" from="Player" to="CanvasLayer/Healthbar" method="_on_Player_hit"]

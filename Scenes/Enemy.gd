@@ -2,11 +2,12 @@ extends KinematicBody2D
 
 class_name Enemy
 
-onready var player : Player = $"../Player"
+onready var player : Player = $"../../Player"
 onready var animated_sprite : AnimatedSprite = $AnimatedSprite
 onready var hit_timer : Timer = $HitTimer
 onready var dead_timer : Timer = $DeadTimer
 onready var particles : Particles2D = $Particles2D
+onready var hurtbox : CollisionShape2D = $Hurtbox
 
 export var acceleration : float = 4
 export var max_speed : float = 2
@@ -45,11 +46,13 @@ func player_collide(_player : Player):
 	hit_timer.start()
 
 func weapon_collide(_weapon: Boomerang):
-	dead = true
-	velocity *= -1
-	particles.emitting = true
-	velocity = velocity.bounce((_weapon.global_position - self.global_position).normalized()) * 4
-	dead_timer.start()
+	if !_weapon.hit_wall:
+		dead = true
+		velocity *= -1
+		particles.emitting = true
+		velocity = velocity.bounce((_weapon.global_position - self.global_position).normalized()) * 4
+		hurtbox.shape = null
+		dead_timer.start()
 
 func _on_HitTimer_timeout():
 	pass

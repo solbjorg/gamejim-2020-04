@@ -68,5 +68,9 @@ texture = SubResource( 4 )
 [node name="DeadTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="SearchTimer" type="Timer" parent="."]
+one_shot = true
 [connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]
 [connection signal="timeout" from="DeadTimer" to="." method="_on_DeadTimer_timeout"]
+[connection signal="timeout" from="SearchTimer" to="." method="_on_SearchTimer_timeout"]

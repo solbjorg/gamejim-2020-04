@@ -28,23 +28,32 @@ rect_scale = Vector2( 4, 4 )
 
 [node name="Characters" type="Node2D" parent="."]
 
-[node name="Enemy" parent="Characters" instance=ExtResource( 3 )]
+[node name="Enemy" parent="Characters" groups=[
+"Enemies",
+] instance=ExtResource( 3 )]
 position = Vector2( 0, 50 )
 scale = Vector2( 1.01044, 0.894818 )
 
-[node name="Enemy2" parent="Characters" instance=ExtResource( 3 )]
+[node name="Enemy2" parent="Characters" groups=[
+"Enemies",
+] instance=ExtResource( 3 )]
 position = Vector2( -137.036, -50.4607 )
 scale = Vector2( 1.01044, 0.894818 )
 
-[node name="Enemy3" parent="Characters" instance=ExtResource( 3 )]
+[node name="Enemy3" parent="Characters" groups=[
+"Enemies",
+] instance=ExtResource( 3 )]
 position = Vector2( -148.74, 63.6548 )
 scale = Vector2( 1.01044, 0.894818 )
 
-[node name="Enemy4" parent="Characters" instance=ExtResource( 3 )]
+[node name="Enemy4" parent="Characters" groups=[
+"Enemies",
+] instance=ExtResource( 3 )]
 position = Vector2( -95.0963, 26.104 )
 scale = Vector2( 1.01044, 0.894818 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 322.056, -100.84 )
 scale = Vector2( 1, 1 )
 min_force = 60
 max_force = 200

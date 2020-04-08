@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/tiny_zombie/tiny_zombie_idle_anim_f2.png" type="Texture" id=1]
 [ext_resource path="res://Assets/tiny_zombie/tiny_zombie_run_anim_f0.png" type="Texture" id=2]
@@ -40,6 +40,9 @@ orbit_velocity_random = 0.0
 [sub_resource type="StreamTexture" id=4]
 load_path = "res://.import/blood.png-52df38846705cd7eaf41ed3599ade0df.stex"
 
+[sub_resource type="OccluderPolygon2D" id=5]
+polygon = PoolVector2Array( 5, -3, 5, 5, -4, 5, -4, -3 )
+
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 2
 collision_mask = 15
@@ -71,6 +74,9 @@ one_shot = true
 
 [node name="SearchTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 5 )
 [connection signal="timeout" from="HitTimer" to="." method="_on_HitTimer_timeout"]
 [connection signal="timeout" from="DeadTimer" to="." method="_on_DeadTimer_timeout"]
 [connection signal="timeout" from="SearchTimer" to="." method="_on_SearchTimer_timeout"]

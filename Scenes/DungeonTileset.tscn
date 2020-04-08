@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Assets/tileset_dungeon.png" type="Texture" id=2]
 
@@ -25,6 +25,30 @@ points = PoolVector2Array( 5, 32, 0, 32, 0, 0, 5, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=8]
 points = PoolVector2Array( 5, 32, 0, 32, 0, 0, 5, 0 )
+
+[sub_resource type="OccluderPolygon2D" id=19]
+polygon = PoolVector2Array( 32, 32, 27, 32, 27, 0, 32, 0 )
+
+[sub_resource type="OccluderPolygon2D" id=20]
+polygon = PoolVector2Array( 27, 0, 32, 0, 32, 32, 27, 32 )
+
+[sub_resource type="OccluderPolygon2D" id=21]
+polygon = PoolVector2Array( 27, 0, 32, 0, 32, 32, 27, 32 )
+
+[sub_resource type="OccluderPolygon2D" id=22]
+polygon = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
+
+[sub_resource type="OccluderPolygon2D" id=23]
+polygon = PoolVector2Array( 0, 32, 32, 32, 32, 0, 0, 0 )
+
+[sub_resource type="OccluderPolygon2D" id=24]
+polygon = PoolVector2Array( 5, 32, 0, 32, 0, 0, 5, 0 )
+
+[sub_resource type="OccluderPolygon2D" id=25]
+polygon = PoolVector2Array( 5, 32, 0, 32, 0, 0, 5, 0 )
+
+[sub_resource type="OccluderPolygon2D" id=26]
+polygon = PoolVector2Array( 5, 32, 0, 32, 0, 0, 5, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=9]
 points = PoolVector2Array( 27, 0, 32, 0, 32, 32, 27, 32 )
@@ -279,7 +303,7 @@ points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
 26/autotile/icon_coordinate = Vector2( 1, 2 )
 26/autotile/tile_size = Vector2( 32, 32 )
 26/autotile/spacing = 0
-26/autotile/occluder_map = [  ]
+26/autotile/occluder_map = [ Vector2( 0, 0 ), SubResource( 19 ), Vector2( 0, 1 ), SubResource( 20 ), Vector2( 0, 2 ), SubResource( 21 ), Vector2( 1, 0 ), SubResource( 22 ), Vector2( 1, 2 ), SubResource( 23 ), Vector2( 2, 0 ), SubResource( 24 ), Vector2( 2, 1 ), SubResource( 25 ), Vector2( 2, 2 ), SubResource( 26 ) ]
 26/autotile/navpoly_map = [  ]
 26/autotile/priority_map = [  ]
 26/autotile/z_index_map = [  ]

@@ -70,7 +70,10 @@ one_shot = true
 
 [node name="Particles2D" type="Particles2D" parent="."]
 emitting = false
+amount = 3
 lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
 randomness = 0.5
 process_material = SubResource( 3 )
 texture = SubResource( 4 )

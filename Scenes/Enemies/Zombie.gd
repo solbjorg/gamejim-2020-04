@@ -27,7 +27,7 @@ export var damage = 10
 var state = EnemyState.IDLE
 var target = Vector2()
 var velocity = Vector2()
-var health setget set_health
+var health setget set_health, get_health
 
 func _ready():
 	animated_sprite.animation = "move"
@@ -68,7 +68,7 @@ func _physics_process(delta):
 
 func player_collide(_player : Player):
 	var direction = (_player.global_position - self.global_position).normalized()
-	_player.hit(direction)
+	_player.hit(direction, self)
 	position -= direction
 	velocity = velocity.bounce(-direction) 
 	hit_timer.start()
@@ -78,10 +78,14 @@ func weapon_collide(_weapon: Boomerang):
 		audio.play()
 		set_health(health - _weapon.velocity.length() * 10)
 		if (health <= 0): die(_weapon)
+		else: particles.emitting = true
 
 func die(_weapon : Boomerang):
 	state = EnemyState.DEAD
 	velocity *= -1
+	particles.one_shot = false
+	particles.amount = 8
+	particles.explosiveness = 0
 	particles.emitting = true
 	velocity = velocity.bounce((_weapon.global_position - self.global_position).normalized()) * _weapon.velocity * 40
 	# only collide with walls
@@ -92,6 +96,9 @@ func die(_weapon : Boomerang):
 func set_health(_health: int):
 	health = max(_health, 0)
 	health_bar.value = _health
+
+func get_health():
+	return health
 
 func _on_HitTimer_timeout():
 	pass

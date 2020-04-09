@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/DungeonTileset.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Enemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Enemies/Zombie.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Healthbar.tscn" type="PackedScene" id=4]
 
 [node name="Node2D" type="Node2D"]

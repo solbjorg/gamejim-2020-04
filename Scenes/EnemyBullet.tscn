@@ -30,11 +30,13 @@ orbit_velocity_random = 0.0
 scale = 10.0
 
 [node name="EnemyBullet" type="Area2D"]
+scale = Vector2( 0.5, 0.5 )
 collision_layer = 16
 collision_mask = 5
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2( 0.5, 0.5 )
 shape = SubResource( 1 )
 
 [node name="enemy_bullet" type="Sprite" parent="."]

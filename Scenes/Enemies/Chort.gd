@@ -1,5 +1,7 @@
 extends Zombie
 
+onready var shoot_timer : Timer = $ShootTimer
+
 var bullet = preload("res://Scenes/EnemyBullet.tscn")
 
 export var preferred_distance = 300
@@ -30,6 +32,7 @@ func searching_behaviour(delta):
 	move()
 
 func _on_ShootTimer_timeout():
+	shoot_timer.wait_time = range_lerp(randf(), 0, 1, 0.3, 0.8)
 	shoot()
 
 func shoot():

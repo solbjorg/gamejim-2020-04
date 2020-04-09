@@ -2,6 +2,7 @@ extends Area2D
 class_name Boomerang
 
 onready var audio : AudioStreamPlayer2D = $AudioStreamPlayer2D
+onready var particles : Particles2D = $Particles2D
 
 export var max_speed : float = 50
 export var acceleration : float = 5
@@ -47,6 +48,9 @@ func enemy_collide(_enemy ):
 
 func wall_collide():
 	hit_wall = true	
+	var local_vel = to_local(velocity)
+	particles.process_material.direction = Vector3(-local_vel.x, -local_vel.y, 0)
+	particles.emitting = true
 	audio.play()
 
 #func reset():

@@ -1,6 +1,8 @@
 extends Area2D
 class_name Boomerang
 
+onready var audio : AudioStreamPlayer2D = $AudioStreamPlayer2D
+
 export var max_speed : float = 50
 export var acceleration : float = 5
 
@@ -45,6 +47,7 @@ func enemy_collide(_enemy ):
 
 func wall_collide():
 	hit_wall = true	
+	audio.play()
 
 #func reset():
 	## completely reset the weapon

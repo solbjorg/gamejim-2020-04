@@ -7,9 +7,12 @@ signal hit
 onready var pickup_timer : Timer = $PickupTimer
 onready var hit_timer : Timer = $HitTimer
 onready var throw_timer : Timer = $ThrowTimer
-var weapon = preload("res://Scenes/Boomerang.tscn")
 onready var held_weapon : Sprite = $"weapon_cleaver"
 onready var aim_line : Line2D = $Line2D
+onready var throw_stream : AudioStreamPlayer2D = $ThrowStreamPlayer
+
+var weapon = preload("res://Scenes/Boomerang.tscn")
+var sounds : Array = [preload("res://Assets/sfx/swing1.wav"),preload("res://Assets/sfx/swing2.wav"),preload("res://Assets/sfx/swing3.wav")]
 
 enum ThrowingState {
 	HOLDING,
@@ -82,6 +85,11 @@ func _input(event):
 				throwing_state = ThrowingState.THROWN
 				pickup_timer.start()
 				throw_timer.stop()
+
+				#finally, play a throwing sound effect!
+				sounds.shuffle()
+				throw_stream.stream = sounds.front()
+				throw_stream.play()
 
 func handle_collision(col: KinematicCollision2D):
 	if col.collider.has_method("player_collide"):

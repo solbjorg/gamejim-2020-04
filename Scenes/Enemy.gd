@@ -16,6 +16,7 @@ onready var dead_timer : Timer = $DeadTimer
 onready var search_timer : Timer = $SearchTimer
 onready var particles : Particles2D = $Particles2D
 onready var hurtbox : CollisionShape2D = $Hurtbox
+onready var audio : AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 export var acceleration : float = 4
 export var max_speed : float = 2
@@ -70,6 +71,9 @@ func player_collide(_player : Player):
 
 func weapon_collide(_weapon: Boomerang):
 	if !_weapon.hit_wall:
+		die(_weapon)
+
+func die(_weapon : Boomerang):
 		state = EnemyState.DEAD
 		velocity *= -1
 		particles.emitting = true
@@ -78,6 +82,8 @@ func weapon_collide(_weapon: Boomerang):
 		collision_layer = 0
 		collision_mask = 4
 		dead_timer.start()
+		audio.play()
+
 
 func _on_HitTimer_timeout():
 	pass

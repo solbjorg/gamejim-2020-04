@@ -9,7 +9,7 @@ extents = Vector2( 5.80952, 10.7215 )
 
 [sub_resource type="ParticlesMaterial" id=2]
 flag_disable_z = true
-direction = Vector3( 0, 0, 0 )
+direction = Vector3( 0, 1, 0 )
 spread = 35.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
@@ -59,6 +59,7 @@ emitting = false
 lifetime = 0.6
 one_shot = true
 explosiveness = 1.0
+local_coords = false
 process_material = SubResource( 2 )
 texture = SubResource( 4 )
 [connection signal="body_entered" from="." to="." method="_on_Boomerang_body_entered"]

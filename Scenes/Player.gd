@@ -24,7 +24,7 @@ enum ThrowingState {
 export var speed : float = 400
 export var min_force = 30
 export var max_force = 150
-export var max_health = 8
+export var max_health = 100
 
 var throwing_state = ThrowingState.HOLDING
 var is_hit = false
@@ -99,12 +99,13 @@ func handle_collision(col: KinematicCollision2D):
 func _on_Timer_timeout():
 	throwing_state = ThrowingState.CAN_PICK_UP
 
-func hit(normal : Vector2):
+func hit(normal : Vector2, damage):
 	if (!is_hit):
 		$AnimatedSprite.animation = "hit"
 		hit_timer.start()
 		is_hit = true
-		health -= 1
+		print (health, damage)
+		health = max(health - damage, 0)
 		emit_signal("hit")
 
 func pickup(body : Boomerang):

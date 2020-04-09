@@ -39,6 +39,7 @@ angular_velocity = 6.03
 angular_velocity_random = 0.3
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
+scale_random = 1.0
 
 [sub_resource type="StreamTexture" id=4]
 load_path = "res://.import/blood.png-52df38846705cd7eaf41ed3599ade0df.stex"

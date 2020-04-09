@@ -5,6 +5,7 @@ class_name Zombie
 enum EnemyState {
 	IDLE,
 	PLAYER_SEEN,
+	SEARCHING,
 	DEAD
 }
 
@@ -20,14 +21,14 @@ onready var health_bar : TextureProgress = $TextureProgress
 
 export var acceleration : float = 4
 export var max_speed : float = 2
-export var max_health : float = 100
+export var max_health : int = 100
 export var raycast_length : float = 500
 export var damage = 10
 
 var state = EnemyState.IDLE
-var target = Vector2()
-var velocity = Vector2()
-var health setget set_health, get_health
+var target : Vector2
+var velocity : Vector2 setget set_velocity
+var health : int setget set_health, get_health
 
 func _ready():
 	animated_sprite.animation = "move"
@@ -35,40 +36,61 @@ func _ready():
 	health_bar.max_value = max_health
 	set_health(max_health)
 
-func _physics_process(delta):
+func find_player():
 	var space_state = get_world_2d().direct_space_state
 	var to = global_position + (player.global_position - global_position).normalized()  * raycast_length
 	var result : Dictionary = space_state.intersect_ray(global_position, to, [self], 5)
-	if result.collider is Player && state != EnemyState.DEAD:
-		state = EnemyState.PLAYER_SEEN
-		target = result.position
-	else: 
-		if state == EnemyState.PLAYER_SEEN:
-			if search_timer.is_stopped(): search_timer.start()
+	if result:
+		if result.collider is Player && state != EnemyState.DEAD:
+			state = EnemyState.PLAYER_SEEN
+			target = result.position
+		else: 
+			if state == EnemyState.PLAYER_SEEN:
+				if search_timer.is_stopped(): 
+					search_timer.start()
+					state = EnemyState.SEARCHING
+
+# only call from _physics_process !
+func move():
+	var col : KinematicCollision2D = move_and_collide(velocity)
+	if col:
+		if col.collider.has_method("hit"):
+			player_collide(col.collider)
+		else:
+			velocity = velocity.slide(col.normal)
+
+func idle_behaviour(_delta):
+	pass
+
+func dead_behaviour(_delta):
+	velocity = move_and_slide(velocity) * 0.9
+
+func searching_behaviour(delta):
+	player_seen_behaviour(delta)
+
+func player_seen_behaviour(delta):
+	if hit_timer.is_stopped():
+		search_timer.stop()
+		var direction = (target - self.global_position).normalized()
+		set_velocity(velocity + direction * delta * acceleration)
+	move()
+
+func _physics_process(delta):
+	find_player()
 			
 	if state == EnemyState.PLAYER_SEEN:
-		if hit_timer.is_stopped():
-			search_timer.stop()
-			var direction = (target - self.global_position).normalized()
-			var _velocity = velocity + direction * delta * acceleration
-			if (_velocity.length() <= max_speed): velocity = _velocity
-			else: velocity = _velocity.normalized() * max_speed
-		var col : KinematicCollision2D = move_and_collide(velocity)
-		if col:
-			if col.collider.has_method("hit"):
-				player_collide(col.collider)
-			else:
-				velocity = velocity.slide(col.normal)
+		player_seen_behaviour(delta)
+	elif state == EnemyState.SEARCHING:
+		searching_behaviour(delta)
 	elif state == EnemyState.IDLE:
-		# TODO add idle stuff
-		pass
+		idle_behaviour(delta)
 	elif state == EnemyState.DEAD:
-		velocity = move_and_slide(velocity) * 0.9
+		dead_behaviour(delta)
 		
 
 func player_collide(_player : Player):
 	var direction = (_player.global_position - self.global_position).normalized()
-	_player.hit(direction, self)
+	_player.hit(direction, damage)
 	position -= direction
 	velocity = velocity.bounce(-direction) 
 	hit_timer.start()
@@ -99,6 +121,10 @@ func set_health(_health: int):
 
 func get_health():
 	return health
+
+func set_velocity(_velocity: Vector2):
+	if (_velocity.length() <= max_speed): velocity = _velocity
+	else: velocity = _velocity.normalized() * max_speed
 
 func _on_HitTimer_timeout():
 	pass

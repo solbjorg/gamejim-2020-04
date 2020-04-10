@@ -10,6 +10,8 @@ onready var throw_timer : Timer = $ThrowTimer
 onready var held_weapon : Sprite = $"weapon_cleaver"
 onready var aim_line : Line2D = $Line2D
 onready var throw_stream : AudioStreamPlayer2D = $ThrowStreamPlayer
+onready var hurt_stream : AudioStreamPlayer2D = $HurtStreamPlayer
+onready var camera : Camera2D = $Camera2D
 
 var weapon = preload("res://Scenes/Boomerang.tscn")
 var sounds : Array = [preload("res://Assets/sfx/swing1.wav"),preload("res://Assets/sfx/swing2.wav"),preload("res://Assets/sfx/swing3.wav")]
@@ -25,6 +27,7 @@ export var speed : float = 400
 export var min_force = 30
 export var max_force = 150
 export var max_health = 100
+export var shake_amount = 2
 
 var throwing_state = ThrowingState.HOLDING
 var is_hit = false
@@ -68,6 +71,12 @@ func _process(_delta):
 	else:
 		aim_line.width = 0
 
+	if !hit_timer.is_stopped():
+		camera.set_offset(Vector2( \
+			(randf() * 2 - 1) * shake_amount, \
+			(randf() * 2 - 1) * shake_amount \
+		))
+
 # shooty!
 func _input(event):
 		if event is InputEventMouseButton:
@@ -106,6 +115,7 @@ func hit(normal : Vector2, damage):
 		is_hit = true
 		print (health, damage)
 		health = max(health - damage, 0)
+		hurt_stream.play()
 		emit_signal("hit")
 
 func pickup(body : Boomerang):

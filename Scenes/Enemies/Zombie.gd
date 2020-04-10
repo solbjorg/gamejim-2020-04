@@ -9,7 +9,7 @@ enum EnemyState {
 	DEAD
 }
 
-onready var player : Player = $"../../Player"
+onready var player : Player = $"../../../Player"
 onready var animated_sprite : AnimatedSprite = $AnimatedSprite
 onready var hit_timer : Timer = $HitTimer
 onready var dead_timer : Timer = $DeadTimer

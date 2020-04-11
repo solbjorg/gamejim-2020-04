@@ -61,7 +61,7 @@ func _physics_process(delta):
 		if Input.is_action_pressed("ui_down"):
 			velocity.y += 1;
 		if velocity.length() > 0:
-			velocity = velocity.normalized() * speed;
+			velocity = velocity.normalized() * speed
 			if state != PlayerState.HIT:
 				$AnimatedSprite.animation = "move"
 			$AnimatedSprite.flip_h = velocity.x < 0
@@ -70,6 +70,10 @@ func _physics_process(delta):
 				$AnimatedSprite.animation = "idle"
 		var col : KinematicCollision2D = move_and_collide(velocity * delta)
 		if col:
+			var is_wall : bool = col.collider.get_collision_layer_bit(2)
+			if is_wall:
+				velocity = velocity.slide(col.normal).normalized() * speed
+				col = move_and_collide(velocity * delta)
 			handle_collision(col)
 
 func _process(_delta):
@@ -115,7 +119,7 @@ func _input(event):
 				throw_stream.play()
 
 func handle_collision(col: KinematicCollision2D):
-	if col.collider.has_method("player_collide"):
+	if col && col.collider.has_method("player_collide"):
 		# a bit silly...but whatever
 		col.collider.player_collide(self)
 

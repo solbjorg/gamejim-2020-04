@@ -11,4 +11,5 @@ func _ready():
 	_player.connect("pickup", self, "_on_Player_pickup")
 
 func _on_Player_pickup():
-	open_door()
+	if open_timer.is_stopped():
+		open_door()

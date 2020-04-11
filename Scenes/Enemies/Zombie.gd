@@ -9,6 +9,8 @@ enum EnemyState {
 	DEAD
 }
 
+signal die(enemy)
+
 onready var player : Player = $"../../../Player"
 onready var animated_sprite : AnimatedSprite = $AnimatedSprite
 onready var hit_timer : Timer = $HitTimer
@@ -108,6 +110,7 @@ func weapon_collide(_weapon: Boomerang):
 
 func die(_weapon : Boomerang):
 	state = EnemyState.DEAD
+	emit_signal("die", self)
 	velocity *= -1
 	particles.one_shot = false
 	particles.amount = 8

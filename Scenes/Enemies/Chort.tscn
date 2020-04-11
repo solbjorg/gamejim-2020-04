@@ -53,6 +53,7 @@ collision_mask = 15
 script = ExtResource( 3 )
 acceleration = 2.0
 max_speed = 1.0
+death_pitch = 0.5
 
 [node name="Hurtbox" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 1.5 )

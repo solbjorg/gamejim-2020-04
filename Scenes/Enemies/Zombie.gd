@@ -24,11 +24,14 @@ export var max_speed : float = 2
 export var max_health : int = 100
 export var raycast_length : float = 500
 export var damage = 10
+export var death_pitch = 2.0
 
 var state = EnemyState.IDLE
 var target : Vector2
 var velocity : Vector2 setget set_velocity
 var health : int setget set_health, get_health
+
+var sounds : Array = [preload("res://Assets/sfx/death1.wav"),preload("res://Assets/sfx/weapon_hit_enemy.wav")]
 
 func _ready():
 	animated_sprite.animation = "move"
@@ -97,6 +100,7 @@ func player_collide(_player : Player):
 
 func weapon_collide(_weapon: Boomerang):
 	if !_weapon.hit_wall:
+		audio.stream = sounds[1]
 		audio.play()
 		set_health(health - _weapon.velocity.length() * 10)
 		if (health <= 0): die(_weapon)
@@ -109,6 +113,9 @@ func die(_weapon : Boomerang):
 	particles.amount = 8
 	particles.explosiveness = 0
 	particles.emitting = true
+	audio.stream = sounds[0]
+	audio.pitch_scale = death_pitch
+	audio.play()
 	velocity = velocity.bounce((_weapon.global_position - self.global_position).normalized()) * _weapon.velocity * 40
 	# only collide with walls
 	collision_layer = 0

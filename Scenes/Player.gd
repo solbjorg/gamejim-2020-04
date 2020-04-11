@@ -5,6 +5,7 @@ class_name Player
 signal hit
 signal heal
 signal die
+signal pickup
 
 onready var pickup_timer : Timer = $PickupTimer
 onready var hit_timer : Timer = $HitTimer
@@ -39,12 +40,13 @@ export var max_force = 150
 export var max_health = 100
 export var shake_amount = 2
 
-var throwing_state = ThrowingState.HOLDING
+var throwing_state = ThrowingState.CAN_PICK_UP
 var health = max_health
 var state = PlayerState.ALIVE
 
 func _ready():
 	$AnimatedSprite.play()
+	held_weapon.visible = false
 
 func _physics_process(delta):
 	if state != PlayerState.DEAD:
@@ -148,6 +150,7 @@ func pickup(body : Boomerang):
 		held_weapon.show()
 		throwing_state = ThrowingState.HOLDING
 		body.queue_free()
+		emit_signal("pickup")
 
 func _on_HitTimer_timeout():
 	if state == PlayerState.HIT:

@@ -1,6 +1,8 @@
 extends StaticBody2D
 
-export var enemies : Array
+class_name TriggerDoor
+
+export(Array, NodePath) var enemies : Array
 export var camera : NodePath
 export var shake_amount : float = 2.0
 
@@ -15,7 +17,6 @@ var opening = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_camera = get_node(camera)
-	print(camera, _camera)
 	for e in enemies:
 		var enemy : Zombie = get_node(e)
 		_enemies.append(enemy)

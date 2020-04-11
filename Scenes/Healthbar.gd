@@ -20,6 +20,9 @@ func _process(_delta):
 
 func _on_Player_hit():
 	update_health(player.health)
+
+func _on_Player_heal():
+	update_health(player.health)
 	
 func update_health(health : float):
 	if tween.is_active():

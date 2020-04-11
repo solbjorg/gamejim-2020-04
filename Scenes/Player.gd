@@ -3,6 +3,7 @@ extends KinematicBody2D
 class_name Player
 
 signal hit
+signal heal
 signal die
 
 onready var pickup_timer : Timer = $PickupTimer
@@ -12,6 +13,7 @@ onready var held_weapon : Sprite = $"weapon_cleaver"
 onready var aim_line : Line2D = $Line2D
 onready var throw_stream : AudioStreamPlayer2D = $ThrowStreamPlayer
 onready var hurt_stream : AudioStreamPlayer2D = $HurtStreamPlayer
+onready var drink_stream : AudioStreamPlayer2D = $DrinkStreamPlayer
 onready var blood_particles : Particles2D = $Bleeding
 onready var camera : Camera2D = $Camera2D
 
@@ -127,6 +129,14 @@ func hit(normal : Vector2, damage):
 		if (health == 0): die()
 		hurt_stream.play()
 		emit_signal("hit")
+
+func heal(_health):
+	if state == PlayerState.ALIVE:
+		health = min(_health + health, max_health)
+		# TODO this is kinda spaghetti... the potion should probably determine what sound to play, or just play it. but whatevs.
+		drink_stream.play()
+		emit_signal("heal")
+
 
 func die():
 	emit_signal("die")

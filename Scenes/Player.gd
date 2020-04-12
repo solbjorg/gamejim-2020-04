@@ -159,3 +159,6 @@ func pickup(body : Boomerang):
 func _on_HitTimer_timeout():
 	if state == PlayerState.HIT:
 		state = PlayerState.ALIVE
+
+func win():
+	state = PlayerState.DEAD

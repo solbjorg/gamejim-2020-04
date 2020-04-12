@@ -19,6 +19,7 @@ animations = [ {
 } ]
 
 [node name="Spawner" instance=ExtResource( 1 )]
+collision/safe_margin = 0.001
 script = ExtResource( 4 )
 max_speed = 0.0
 max_health = 200

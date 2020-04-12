@@ -18,6 +18,7 @@ var force : float
 
 func _ready():
 	player = get_parent().get_node("Player")
+	player.connect("pickup", self, "_on_Player_pickup")
 	pass 
 
 func _process(delta):
@@ -65,8 +66,11 @@ func _on_WallHitbox_body_entered(body):
 
 func _on_CharacterHitbox_body_entered(body):
 	var is_player : bool = body.get_collision_layer_bit(0)
-	var is_enemy : bool = body.get_collision_layer_bit(1)
+	var is_enemy : bool = body.get_collision_layer_bit(1) || body.get_collision_layer_bit(6)
 	if is_player:
 		player_collide(body)
 	elif is_enemy:
 		enemy_collide(body)
+
+func _on_Player_pickup():
+	queue_free()

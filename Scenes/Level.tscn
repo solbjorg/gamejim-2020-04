@@ -339,10 +339,6 @@ max_spawn_time = 5.0
 position = Vector2( 2429.69, 1308.4 )
 to_spawn = "res://Scenes/Enemies/FlyingSkull.tscn"
 
-[node name="Spawner8" parent="Level3/Characters" instance=ExtResource( 16 )]
-position = Vector2( 2354.87, 1772.28 )
-to_spawn = "res://Scenes/Enemies/FlyingSkull.tscn"
-
 [node name="Spawner4" parent="Level3/Characters" instance=ExtResource( 16 )]
 position = Vector2( 2080.76, 1516.25 )
 to_spawn = "res://Scenes/Enemies/Zombie.tscn"
@@ -390,7 +386,7 @@ camera = NodePath("../../../Player/Camera2D")
 [node name="TriggerDoor2" parent="Level3/Misc" instance=ExtResource( 8 )]
 position = Vector2( 2915.52, 1518.23 )
 scale = Vector2( 1, 2 )
-enemies = [ NodePath("../../Characters/Spawner"), NodePath("../../Characters/Spawner2"), NodePath("../../Characters/Spawner3"), NodePath("../../Characters/Spawner4"), NodePath("../../Characters/Spawner7"), NodePath("../../Characters/Spawner8") ]
+enemies = [ NodePath("../../Characters/Spawner"), NodePath("../../Characters/Spawner2"), NodePath("../../Characters/Spawner3"), NodePath("../../Characters/Spawner4"), NodePath("../../Characters/Spawner7") ]
 camera = NodePath("../../../Player/Camera2D")
 
 [node name="HealthPotion" parent="Level3/Misc" instance=ExtResource( 7 )]

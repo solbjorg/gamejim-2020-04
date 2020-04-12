@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/Enemies/Zombie.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/spawner/spawn.png" type="Texture" id=2]
+[ext_resource path="res://Assets/spawner/idle.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Enemies/Spawner.gd" type="Script" id=4]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": false,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": false,
+"name": "spawn",
+"speed": 2.0
+} ]
+
+[node name="Spawner" instance=ExtResource( 1 )]
+script = ExtResource( 4 )
+max_speed = 0.0
+max_health = 200
+raycast_length = 700.0
+death_pitch = 0.3
+
+[node name="Hurtbox" parent="." index="0"]
+position = Vector2( -0.7, 3.5 )
+scale = Vector2( 3.056, 0.9 )
+
+[node name="AnimatedSprite" parent="." index="1"]
+frames = SubResource( 1 )
+animation = "idle"
+
+[node name="LightOccluder2D" parent="." index="6"]
+light_mask = 0
+light_mask = 0
+
+[node name="AudioStreamPlayer2D" parent="." index="7"]
+pitch_scale = 0.2
+
+[node name="TextureProgress" parent="." index="8"]
+margin_left = -5.11109
+margin_top = -15.3054
+margin_right = 3.88891
+margin_bottom = -13.3054
+
+[node name="SpawnTimer" type="Timer" parent="." index="9"]
+wait_time = 1.5
+autostart = true
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]

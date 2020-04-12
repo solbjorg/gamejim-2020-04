@@ -70,7 +70,7 @@ func _physics_process(delta):
 				$AnimatedSprite.animation = "idle"
 		var col : KinematicCollision2D = move_and_collide(velocity * delta)
 		if col:
-			var is_wall : bool = col.collider.get_collision_layer_bit(2)
+			var is_wall : bool = col.collider.get_collision_layer_bit(2) || col.collider.get_collision_layer_bit(5)
 			if is_wall:
 				velocity = velocity.slide(col.normal).normalized() * speed
 				col = move_and_collide(velocity * delta)

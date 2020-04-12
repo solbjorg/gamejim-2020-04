@@ -47,7 +47,7 @@ margin_right = -488.0
 [node name="EndScreen" parent="CanvasLayer" instance=ExtResource( 17 )]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1104.67, 175.869 )
+position = Vector2( 1104.67, 185.629 )
 scale = Vector2( 1, 1 )
 z_index = 5
 min_force = 60
@@ -304,6 +304,17 @@ position = Vector2( -495.976, 1520.02 )
 player = NodePath("../../Player")
 destination = Vector2( 450, 1519 )
 
+[node name="Label" type="Label" parent="Level2"]
+margin_left = -438.333
+margin_top = 651.015
+margin_right = -166.333
+margin_bottom = 668.015
+custom_fonts/font = ExtResource( 13 )
+text = "do not let her go"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Level3" type="Node2D" parent="."]
 
 [node name="Characters" type="Node2D" parent="Level3"]
@@ -400,6 +411,20 @@ position = Vector2( 2741.14, 1429.45 )
 
 [node name="HealthPotion5" parent="Level3/Misc" instance=ExtResource( 7 )]
 position = Vector2( 2023.19, 2106.63 )
+
+[node name="HealthPotion6" parent="Level3/Misc" instance=ExtResource( 7 )]
+position = Vector2( 2319.46, 1589.58 )
+
+[node name="Label" type="Label" parent="Level3/Misc"]
+margin_left = 1696.26
+margin_top = 1417.29
+margin_right = 1984.26
+margin_bottom = 1434.29
+custom_fonts/font = ExtResource( 13 )
+text = "the world will end"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="die" from="Player" to="CanvasLayer/RestartGame" method="_on_Player_die"]
 [connection signal="heal" from="Player" to="CanvasLayer/Healthbar" method="_on_Player_heal"]
 [connection signal="hit" from="Player" to="CanvasLayer/Healthbar" method="_on_Player_hit"]

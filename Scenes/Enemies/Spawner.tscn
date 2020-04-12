@@ -23,7 +23,7 @@ collision/safe_margin = 0.001
 script = ExtResource( 4 )
 max_speed = 0.0
 max_health = 200
-raycast_length = 700.0
+raycast_length = 400.0
 death_pitch = 0.3
 
 [node name="Hurtbox" parent="." index="0"]

@@ -23,7 +23,7 @@ func _on_SpawnTimer_timeout():
 
 func spawn():
 	var enemy = _to_spawn.instance()
-	enemy.position = global_position + Vector2(0, 32)
+	enemy.position = global_position + Vector2(randf(), randf()).normalized() * 32
 	get_parent().add_child(enemy)
 
 func _on_AnimatedSprite_animation_finished():
